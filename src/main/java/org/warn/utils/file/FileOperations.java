@@ -39,11 +39,12 @@ public class FileOperations {
 	 * Returns true if given folder path exists. If it does not exist, attempts to create the given path elements
 	 * and return true, and returns false if this fails.
 	 * 
-	 * @param pathElements Directory path elements
+	 * @param path Path string or initial part of the path string (mandatory)
+	 * @param additionalPathElements Additional directory path elements
 	 * @return True or false
 	 */
-	public static boolean checkOrCreateDir( String... pathElements ) {
-		Path p = Paths.get( Env.getUserHomeDir(), pathElements );
+	public static boolean checkOrCreateDir( String path, String... additionalPathElements ) {
+		Path p = Paths.get( path, additionalPathElements );
 		try {
 			if( !Files.exists(p) ) {
 				Files.createDirectories(p);
@@ -55,15 +56,20 @@ public class FileOperations {
 		}
 	}
 	
+	public static boolean checkOrCreateInHomeDir( String... pathElements ) {
+		return checkOrCreateDir( Env.getUserHomeDir(), pathElements );
+	}
+	
 	/**
 	 * Returns true if given file exists. If it does not exist, attempts to create the given path elements
 	 * and return true, and returns false if this fails.
 	 * 
-	 * @param pathElements Directory path elements
+	 * @param path Path string or initial part of the path string (mandatory)
+	 * @param additionalPathElements Additional directory path elements
 	 * @return True or false
 	 */
-	public static boolean checkOrCreateFile( String... pathElements ) {
-		Path p = Paths.get( Env.getUserHomeDir(), pathElements );
+	public static boolean checkOrCreateFile( String path, String... additionalPathElements ) {
+		Path p = Paths.get( path, additionalPathElements );
 		try {
 			if( !Files.exists(p) ) {
 				Files.createFile(p);
@@ -73,6 +79,10 @@ public class FileOperations {
 			LOGGER.error("Error while checking or creating file", e );
 			return false;
 		}
+	}
+	
+	public static boolean checkOrCreateFileInHomeDir( String... pathElements ) {
+		return checkOrCreateFile( Env.getUserHomeDir(), pathElements );
 	}
 	
 	/**

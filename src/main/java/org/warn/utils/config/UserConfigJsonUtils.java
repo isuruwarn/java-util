@@ -41,7 +41,7 @@ public class UserConfigJsonUtils {
 	}
 	
 	public static synchronized void updateMap( Map<String, String> propertyMap, String... pathElements ) {
-		if( FileOperations.checkOrCreateFile( pathElements ) ) {
+		if( FileOperations.checkOrCreateFileInHomeDir( pathElements ) ) {
 			try {
 				// https://www.mkyong.com/java/how-to-enable-pretty-print-json-output-jackson/
 				ObjectMapper mapper = new ObjectMapper();
@@ -75,7 +75,7 @@ public class UserConfigJsonUtils {
 	}
 	
 	public static synchronized void updateList( List<String> list, String... pathElements ) {
-		if( FileOperations.checkOrCreateFile( pathElements ) ) {
+		if( FileOperations.checkOrCreateFileInHomeDir( pathElements ) ) {
 			try {
 				// https://www.mkyong.com/java/how-to-enable-pretty-print-json-output-jackson/
 				ObjectMapper mapper = new ObjectMapper();
