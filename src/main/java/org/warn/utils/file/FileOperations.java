@@ -234,5 +234,29 @@ public class FileOperations {
 	public static boolean clearDirInHomeDir( String... pathElements ) {
 		return clearDir( Env.getUserHomeDir(), pathElements );
 	}
-
+	
+	public int deleteFiles( String path, String pattern ) {
+		
+		int deletedCount = 0;
+		Path dir = Paths.get(path);
+		Finder finder = new Finder(pattern);
+		try {
+			Files.walkFileTree( dir, finder );
+		} catch (IOException e) {
+			LOGGER.error("Error while scanning files for deletion", e);
+		}
+		
+		for( Path p: finder.getMatchedFiles() ) {
+			LOGGER.debug("DELETING FILE - " + p);
+			try {
+				Files.delete(p);
+				deletedCount++;
+			} catch( IOException e ) {
+				LOGGER.error("Error while deleting files", e);
+			}
+		}
+		
+		LOGGER.debug("Deleted " + deletedCount + " file(s)..");
+		return deletedCount;
+	}
 }
