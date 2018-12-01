@@ -31,8 +31,7 @@ public class FileOperations {
 	}
 	
 	public static boolean existsInHomeDir( String... pathElements ) {
-		Path p = Paths.get( Env.getUserHomeDir(), pathElements );
-		return Files.exists(p);
+		return exists( Env.getUserHomeDir(), pathElements );
 	}
 	
 	/**
@@ -56,7 +55,7 @@ public class FileOperations {
 		}
 	}
 	
-	public static boolean checkOrCreateInHomeDir( String... pathElements ) {
+	public static boolean checkOrCreateDirInHomeDir( String... pathElements ) {
 		return checkOrCreateDir( Env.getUserHomeDir(), pathElements );
 	}
 	

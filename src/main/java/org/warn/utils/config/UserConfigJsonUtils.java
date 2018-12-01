@@ -21,21 +21,23 @@ public class UserConfigJsonUtils {
 	@SuppressWarnings("unchecked")
 	public static ConcurrentMap<String, String> loadMap( String... pathElements ) {
 		ConcurrentMap<String, String> root = null;
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			StringBuilder fileContents = FileOperations.readFromHomeDir( pathElements );
-			if( fileContents!=null && !fileContents.equals("") ) {
-				root = mapper.readValue( fileContents.toString(), ConcurrentMap.class );
-				LOGGER.debug( "Loaded properties - " + root.toString() );
+		if( FileOperations.existsInHomeDir( pathElements ) ) {
+			try {
+				ObjectMapper mapper = new ObjectMapper();
+				StringBuilder fileContents = FileOperations.readFromHomeDir( pathElements );
+				if( fileContents!=null && !fileContents.equals("") ) {
+					root = mapper.readValue( fileContents.toString(), ConcurrentMap.class );
+					LOGGER.debug( "Loaded properties - " + root.toString() );
+				}
+			} catch( JsonParseException e ) {
+				LOGGER.error("Error while parsing config json", e );
+				
+			} catch( JsonMappingException e ) {
+				LOGGER.error("Error while parsing config json", e );
+				
+			} catch( IOException e ) {
+				LOGGER.error("Error while reading config json", e );
 			}
-		} catch( JsonParseException e ) {
-			LOGGER.error("Error while parsing config json", e );
-			
-		} catch( JsonMappingException e ) {
-			LOGGER.error("Error while parsing config json", e );
-			
-		} catch( IOException e ) {
-			LOGGER.error("Error while reading config json", e );
 		}
 		return root;
 	}
@@ -55,21 +57,23 @@ public class UserConfigJsonUtils {
 	@SuppressWarnings("unchecked")
 	public static List<String> loadList( String... pathElements ) {
 		List<String> list = null;
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			StringBuilder fileContents = FileOperations.readFromHomeDir( pathElements );
-			if( fileContents!=null && !fileContents.equals("") ) {
-				list = mapper.readValue( fileContents.toString(), List.class );
-				LOGGER.debug( "Loaded properties - " + list.toString() );
+		if( FileOperations.existsInHomeDir( pathElements ) ) {
+			try {
+				ObjectMapper mapper = new ObjectMapper();
+				StringBuilder fileContents = FileOperations.readFromHomeDir( pathElements );
+				if( fileContents!=null && !fileContents.equals("") ) {
+					list = mapper.readValue( fileContents.toString(), List.class );
+					LOGGER.debug( "Loaded properties - " + list.toString() );
+				}
+			} catch( JsonParseException e ) {
+				LOGGER.error("Error while parsing config json", e );
+				
+			} catch( JsonMappingException e ) {
+				LOGGER.error("Error while parsing config json", e );
+				
+			} catch( IOException e ) {
+				LOGGER.error("Error while reading config json", e );
 			}
-		} catch( JsonParseException e ) {
-			LOGGER.error("Error while parsing config json", e );
-			
-		} catch( JsonMappingException e ) {
-			LOGGER.error("Error while parsing config json", e );
-			
-		} catch( IOException e ) {
-			LOGGER.error("Error while reading config json", e );
 		}
 		return list;
 	}

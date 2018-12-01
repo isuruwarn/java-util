@@ -1,13 +1,13 @@
 package org.warn.utils.config;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.warn.utils.file.FileOperations;
 
 /**
  * A reusable class for managing user configurations. <br><br>
@@ -27,21 +27,26 @@ public final class UserConfig {
 	private static final Logger LOGGER = LoggerFactory.getLogger( UserConfig.class );
 	private static final String CONFIG_FILE_NAME_MISSING_ERR_MSG = "Please provide a config file name";
 	
-	private String [] configFile;
+	private String [] configFilePath;
 	private ConcurrentMap<String, String> props;
 	
+	/**
+	 * Initializes the user configurations by attempting load the provided configurations file into an internal
+	 * property map.
+	 * 
+	 * @param defaultProps Default properties
+	 * @param configFilePath Relative path elements of configuration file, which will be created in the user's home directory. 
+	 */
 	public UserConfig( ConcurrentMap<String, String> defaultProps, String... configFilePath ) {
 		if( configFilePath == null || configFilePath.length == 0 || 
 			configFilePath[0] == null || String.join( ",", configFilePath ).isEmpty() ) {
 			throw new IllegalArgumentException(CONFIG_FILE_NAME_MISSING_ERR_MSG);
 		}
-		this.configFile = configFilePath;
-		if( FileOperations.existsInHomeDir( this.configFile ) ) {
-			LOGGER.info("Loading configurations from file - " + this.configFile);
-			this.props = UserConfigJsonUtils.loadMap( this.configFile );
-		}
+		this.configFilePath = configFilePath;
+		LOGGER.info("Loading configurations from file - " + this.configFilePath);
+		this.props = UserConfigJsonUtils.loadMap( this.configFilePath );
 		if( this.props == null ) {
-			LOGGER.info("Could not find existing configurations file - " + Arrays.toString(this.configFile) );
+			LOGGER.info("Could not find existing configurations file - " + Arrays.toString(this.configFilePath) );
 			this.props = new ConcurrentHashMap<String, String>();
 			if( defaultProps != null ) {
 				LOGGER.info("Loading default configurations");
@@ -55,7 +60,16 @@ public final class UserConfig {
 		if( existingValue == null || existingValue.isEmpty() || !existingValue.equals(value) ) {
 			LOGGER.debug("Updating Property={}, ExistingValue={}, NewValue={}", property, existingValue, value );
 			this.props.put( property, value );
-			UserConfigJsonUtils.updateMap( this.props, this.configFile );
+			UserConfigJsonUtils.updateMap( this.props, this.configFilePath );
+		}
+	}
+	
+	public synchronized void updateConfig( String property, Collection<String> value ) {
+		String existingValue = this.props.get(property);
+		if( existingValue == null || existingValue.isEmpty() || !existingValue.equals( value.toString() ) ) {
+			LOGGER.debug("Updating Property={}, ExistingValue={}, NewValue={}", property, existingValue, value );
+			this.props.put( property, value.toString() );
+			UserConfigJsonUtils.updateMap( this.props, this.configFilePath );
 		}
 	}
 	
