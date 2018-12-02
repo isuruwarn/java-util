@@ -60,7 +60,7 @@ public class FileOperations {
 	}
 	
 	/**
-	 * Returns true if given file exists. If it does not exist, attempts to create the given path elements
+	 * Returns true if given file exists. If it does not exist, attempts to create the given file
 	 * and return true, and returns false if this fails.
 	 * 
 	 * @param path Path string or initial part of the path string (mandatory)

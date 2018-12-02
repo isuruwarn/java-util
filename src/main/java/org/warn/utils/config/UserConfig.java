@@ -44,7 +44,7 @@ public final class UserConfig {
 		}
 		this.configFilePath = configFilePath;
 		LOGGER.info("Loading configurations from file - " + this.configFilePath);
-		this.props = UserConfigJsonUtils.loadMap( this.configFilePath );
+		this.props = UserConfigJsonUtils.loadMapFromHomeDir( this.configFilePath );
 		if( this.props == null ) {
 			LOGGER.info("Could not find existing configurations file - " + Arrays.toString(this.configFilePath) );
 			this.props = new ConcurrentHashMap<String, String>();
@@ -60,31 +60,29 @@ public final class UserConfig {
 		if( existingValue == null || existingValue.isEmpty() || !existingValue.equals(value) ) {
 			LOGGER.debug("Updating Property={}, ExistingValue={}, NewValue={}", property, existingValue, value );
 			this.props.put( property, value );
-			UserConfigJsonUtils.updateMap( this.props, this.configFilePath );
+			UserConfigJsonUtils.updateMapInHomeDir( this.props, this.configFilePath );
 		}
 	}
 	
-	public synchronized void updateConfig( String property, Collection<String> value ) {
-		String existingValue = this.props.get(property);
-		if( existingValue == null || existingValue.isEmpty() || !existingValue.equals( value.toString() ) ) {
-			LOGGER.debug("Updating Property={}, ExistingValue={}, NewValue={}", property, existingValue, value );
-			this.props.put( property, value.toString() );
-			UserConfigJsonUtils.updateMap( this.props, this.configFilePath );
+	public synchronized void updateConfig( String property, Collection<String> updatedValues ) {
+		if( updatedValues != null ) {
+			String jsonString = UserConfigJsonUtils.getJsonString(updatedValues);
+			String existingValue = this.props.get(property);
+			if( existingValue == null || existingValue.isEmpty() || !existingValue.equals( jsonString ) ) {
+				LOGGER.debug("Updating Property={}, NewValue={}", property, jsonString );
+				this.props.put( property, jsonString );
+				UserConfigJsonUtils.updateMapInHomeDir( this.props, this.configFilePath );
+			}
 		}
 	}
 	
 	public String getProperty( String property ) {
-		return (String) this.props.get(property);
+		return this.props.get( property );
 	}
 	
-	public List<String> getListProperty( String property ) {
-		List<String> list = null;
-		String strList = (String) this.props.get(property);
-		if( strList != null && !strList.isEmpty() ) {
-			String [] arr = strList.split(",");
-			list = Arrays.asList(arr);
-		}
-		return list;
+	public List<String> getListProperty( String propName ) {
+		String propValue = this.props.get( propName );
+		return UserConfigJsonUtils.getListFromJsonString( propValue );
 	}
 	
 }
