@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 
@@ -201,6 +202,18 @@ public class FileOperations {
 	
 	public static boolean writeToHomeDir( String content, String... additionalPathElements ) {
 		return write( content, Env.getUserHomeDir(), additionalPathElements );
+	}
+	
+	/**
+	 * Copy source file to specified target. Overwrites existing file. Returns null in case of failure.
+	 * 
+	 * @param source {@link #Path} of source file
+	 * @param target {@link #Path} of target file
+	 * @return {@link #Path} of copied file or null in case of failure
+	 * @throws IOException 
+	 */
+	public static Path copy( Path source, Path target ) throws IOException {
+		return Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES );
 	}
 	
 	/**
