@@ -8,4 +8,5 @@ public class DateTimeUtil {
 	public static final String DATE_ONLY_TS_FORMAT = "yyyy-MM-dd";
 	
 	public static final SimpleDateFormat fullTimestampSDF = new SimpleDateFormat( FULL_TS_FORMAT );
+	public static final SimpleDateFormat dateSDF = new SimpleDateFormat( DATE_ONLY_TS_FORMAT );
 }

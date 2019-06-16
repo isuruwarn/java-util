@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.warn.utils.core.StringHelper;
 
 /**
  * A reusable class for managing user configurations. <br><br>
@@ -43,7 +44,7 @@ public final class UserConfig {
 			throw new IllegalArgumentException(CONFIG_FILE_NAME_MISSING_ERR_MSG);
 		}
 		this.configFilePath = configFilePath;
-		LOGGER.info("Loading configurations from file - " + this.configFilePath);
+		LOGGER.info("Loading configurations from file - {}", StringHelper.arrayToString( this.configFilePath ) );
 		this.props = UserConfigJsonUtils.loadMapFromHomeDir( this.configFilePath );
 		if( this.props == null ) {
 			LOGGER.info("Could not find existing configurations file - " + Arrays.toString(this.configFilePath) );
