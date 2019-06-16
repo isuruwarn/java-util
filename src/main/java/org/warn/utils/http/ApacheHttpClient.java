@@ -13,7 +13,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.warn.utils.core.GlobalConstants;
+import org.warn.utils.core.Constants;
 import org.warn.utils.file.FileOperations;
 
 public class ApacheHttpClient {
@@ -37,7 +37,7 @@ public class ApacheHttpClient {
 		
 		} catch( UnknownHostException e ) {
 			LOGGER.error("Error while establishing connection - " + e.getMessage());
-			dto = new HttpDTO( 0, null, FileOperations.readResource( GlobalConstants.UNKNOWN_HOST_ERROR_HTML ) );
+			dto = new HttpDTO( 0, null, FileOperations.readResource( Constants.UNKNOWN_HOST_ERROR_HTML ) );
 			
 		} catch (IOException e) {
 			LOGGER.error("Error while establishing connection", e);

@@ -18,7 +18,7 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.warn.utils.core.GlobalConstants;
+import org.warn.utils.core.Constants;
 import org.warn.utils.file.FileOperations;
 
 public class CustomHttpClient {
@@ -47,20 +47,20 @@ public class CustomHttpClient {
 			
 		} catch( MalformedURLException e ) {
 			LOGGER.error("Invalid URL", e);
-			webContent.append( FileOperations.readResource( GlobalConstants.UNKNOWN_HOST_ERROR_HTML ) );
+			webContent.append( FileOperations.readResource( Constants.UNKNOWN_HOST_ERROR_HTML ) );
 			
 		} catch( FileNotFoundException e ) {
 			LOGGER.error("Invalid URL", e);
-			webContent.append( FileOperations.readResource( GlobalConstants.NOT_FOUND_ERROR_HTML ) );
+			webContent.append( FileOperations.readResource( Constants.NOT_FOUND_ERROR_HTML ) );
 			
 		} catch( UnknownHostException e ) {
 			LOGGER.error("Invalid URL", e);
-			webContent.append( FileOperations.readResource( GlobalConstants.UNKNOWN_HOST_ERROR_HTML ) );
+			webContent.append( FileOperations.readResource( Constants.UNKNOWN_HOST_ERROR_HTML ) );
 			
 		} catch( IOException e ) {
 			LOGGER.error("Error while connecting to website", e);
 			if( webContent == null || webContent.toString().isEmpty() ) {
-				webContent.append( FileOperations.readResource( GlobalConstants.RENDERING_ERROR_HTML ) );
+				webContent.append( FileOperations.readResource( Constants.RENDERING_ERROR_HTML ) );
 			} else {
 				webContent.append( respStatus );
 			}
@@ -106,7 +106,7 @@ public class CustomHttpClient {
 		} catch( IOException e ){
 			LOGGER.error("Error while connecting to website", e);
 			if( webContent == null || webContent.toString().isEmpty() ) {
-				webContent.append( FileOperations.readResource( GlobalConstants.RENDERING_ERROR_HTML ) );
+				webContent.append( FileOperations.readResource( Constants.RENDERING_ERROR_HTML ) );
 			} else {
 				webContent.append( respStatus );
 			}
@@ -140,7 +140,7 @@ public class CustomHttpClient {
 		} catch( IOException e ) {
 			LOGGER.error("Error while connecting making https connection", e);
 			if( webContent == null || webContent.toString().isEmpty() ) {
-				webContent.append( FileOperations.readResource( GlobalConstants.RENDERING_ERROR_HTML ) );
+				webContent.append( FileOperations.readResource( Constants.RENDERING_ERROR_HTML ) );
 			} else {
 				webContent.append( respStatus );
 			}

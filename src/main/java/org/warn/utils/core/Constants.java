@@ -1,7 +1,7 @@
 package org.warn.utils.core;
 
 
-public class GlobalConstants {
+public class Constants {
 	
 	public static final String HTTP_PROTOCOL = "http://";
 	public static final String HTTPS_PROTOCOL = "https://";
