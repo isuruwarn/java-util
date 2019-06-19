@@ -10,12 +10,16 @@ public class FileHelper {
 		if( fileSize < KB ) {
 			return fileSize + "B";
 		} else if( fileSize >= KB && fileSize < MB ) {
-			return fileSize / KB + "KB";
+			return formatFileSize( fileSize, KB, "KB" );
 		} else if( fileSize >= MB && fileSize < GB ) {
-			return fileSize / MB + "MB";
+			return formatFileSize( fileSize, MB, "MB" );
 		} else {
-			return fileSize / GB + "GB";
+			return formatFileSize( fileSize, GB, "GB" );
 		}
+	}
+	
+	private static String formatFileSize( long fileSize, long unit, String unitStr ) {
+		return String.format("%.2f%s", (float) fileSize / unit, unitStr);
 	}
 
 }
