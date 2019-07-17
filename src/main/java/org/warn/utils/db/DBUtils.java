@@ -15,11 +15,11 @@ public class DBUtils {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DBUtils.class);
 
-	public static synchronized Connection getConnection(String filePathAndName) throws SQLException, NamingException {
+	public static synchronized Connection getConnection(String jndiFile) throws SQLException, NamingException {
 		Connection con = null;
 		try {
 			Context initCtx = new InitialContext();
-			DataSource ds = (DataSource) initCtx.lookup("java:" + filePathAndName);
+			DataSource ds = (DataSource) initCtx.lookup("java:" + jndiFile);
 			con = ds.getConnection();
 		} catch( SQLException | NamingException e ) {
 			LOGGER.error("Error while openning database connection", e);

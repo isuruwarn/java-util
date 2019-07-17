@@ -28,7 +28,7 @@ public class UserConfigJsonUtils {
 		if( FileOperations.existsInHomeDir( pathElements ) ) {
 			try {
 				StringBuilder fileContents = FileOperations.readFromHomeDir( pathElements );
-				if( fileContents!=null && !fileContents.equals("") ) {
+				if( fileContents!=null && !fileContents.toString().isEmpty() ) {
 					root = JsonUtil.mapper.readValue( fileContents.toString(), ConcurrentMap.class );
 					LOGGER.debug( "Loaded properties - " + root.toString() );
 				}
