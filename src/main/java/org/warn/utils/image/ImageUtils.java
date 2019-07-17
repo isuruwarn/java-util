@@ -1,5 +1,6 @@
 package org.warn.utils.image;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 //import java.awt.image.BufferedImage;
@@ -102,6 +103,28 @@ public class ImageUtils {
 		// replace RGB value with avg
 		pixelRGB = (a << 24) | (avg << 16) | (avg << 8) | avg;
 		return pixelRGB;
+	}
+	
+	public static int getGrayscaleValue(Color c) {
+
+		int a = c.getAlpha();
+		int r = c.getRed();
+		int g = c.getGreen();
+		int b = c.getBlue();
+		int avg = (r + g + b) / 3;
+
+		String s1 = Integer.toBinaryString(avg);
+		String s2 = Integer.toBinaryString(a);
+		String s3 = s2 + s1 + s1 + s1;
+		int p = Integer.parseInt(s3, 2);
+
+//		if (p < -1) {
+//			p = -99999999;
+//		} else {
+//			p = 0;
+//		}
+
+		return p;
 	}
 
 }

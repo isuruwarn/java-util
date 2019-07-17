@@ -247,7 +247,7 @@ public class FileOperations {
 		return clearDir( Env.getUserHomeDir(), pathElements );
 	}
 	
-	public int deleteFiles( String path, String pattern ) {
+	public static int deleteFiles( String path, String pattern ) {
 		
 		int deletedCount = 0;
 		Path dir = Paths.get(path);
