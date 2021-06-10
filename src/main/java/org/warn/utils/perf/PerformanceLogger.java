@@ -28,14 +28,17 @@ public class PerformanceLogger {
 	public void printStatistics() {
 		
 		if( startTime > 0 ) {
+			log.info( "---------------------------------------" );
+
 			endTime = clock.millis();
 			duration = (endTime - startTime);
-			log.info( "Duration (ms) \t" + duration );
+			log.info( "Duration (ms): " + duration );
 			
 			endMemory = Runtime.getRuntime().freeMemory();
-			log.info( "Free Memory at Start (bytes) \t" + startMemory );
-			log.info( "Free Memory at End (bytes) \t" + endMemory );
-			
+			log.info( "Free Memory at Start (bytes): " + startMemory );
+			log.info( "Free Memory at End (bytes): " + endMemory );
+			log.info( "---------------------------------------" );
+
 		} else {
 			log.warn("Performance logger has not been started..");
 		}

@@ -1,8 +1,5 @@
 package org.warn.utils.file;
 
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +11,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +19,8 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.warn.utils.core.Env;
+
+import static java.nio.file.StandardOpenOption.*;
 
 public class FileOperations {
 	
@@ -138,8 +138,7 @@ public class FileOperations {
 	/**
 	 * Reads specified file from the users local directory and returns contents as a {@link StringBuilder} object. 
 	 * Returns null if file is not found or an exception is encountered.
-	 * 
-	 * @param path Path string or initial part of the path string (mandatory)
+	 *
 	 * @param additionalPathElements Additional directory path elements
 	 * @return File contents as {@link StringBuilder} object
 	 */
@@ -175,41 +174,53 @@ public class FileOperations {
 	 * @return True if successful, false during failure
 	 */
 	public static boolean write( String content, String path, String... additionalPathElements ) {
-		
+		return write( content, TRUNCATE_EXISTING, path, additionalPathElements );
+	}
+
+	public static boolean appendToFile( String content, String path, String... additionalPathElements ) {
+		return write( content, APPEND, path, additionalPathElements );
+	}
+
+	public static boolean writeToHomeDir( String content, String... additionalPathElements ) {
+		return write( content, Env.getUserHomeDir(), additionalPathElements );
+	}
+
+	public static boolean appendToFileInHomeDir( String content, String... additionalPathElements ) {
+		return write( content, APPEND, Env.getUserHomeDir(), additionalPathElements );
+	}
+
+	private static boolean write(String content, StandardOpenOption option, String path, String... additionalPathElements ) {
+
 		if( content == null || content.equals("") ) {
 			return false;
 		}
 		if( path == null || path.equals("") ) {
 			return false;
 		}
-		
+
 		byte data[] = null;
 		try {
 			data = content.getBytes("UTF8");
 		} catch( UnsupportedEncodingException e ) {
 			LOGGER.error("Error while writing file to local directory", e );
 		}
-		
-	    Path p = Paths.get( path, additionalPathElements );
-	    try ( BufferedOutputStream out = new BufferedOutputStream( Files.newOutputStream( p, CREATE, TRUNCATE_EXISTING ) ) ) {
-	    	out.write( data, 0, data.length );
-	    	return true;
-	    } catch( IOException e ) {
-	    	LOGGER.error("Error while writing file to local directory", e );
-	    	return false;
-	    }
-	}
-	
-	public static boolean writeToHomeDir( String content, String... additionalPathElements ) {
-		return write( content, Env.getUserHomeDir(), additionalPathElements );
+
+		Path p = Paths.get( path, additionalPathElements );
+		try ( BufferedOutputStream out = new BufferedOutputStream( Files.newOutputStream( p, CREATE, option ) ) ) {
+			out.write( data, 0, data.length );
+			return true;
+		} catch( IOException e ) {
+			LOGGER.error("Error while writing file to local directory", e );
+			return false;
+		}
 	}
 	
 	/**
 	 * Copy source file to specified target. Overwrites existing file. Returns null in case of failure.
 	 * 
-	 * @param source {@link #Path} of source file
-	 * @param target {@link #Path} of target file
-	 * @return {@link #Path} of copied file or null in case of failure
+	 * @param source {@link Path} of source file
+	 * @param target {@link Path} of target file
+	 * @return {@link Path} of copied file or null in case of failure
 	 * @throws IOException 
 	 */
 	public static Path copy( Path source, Path target ) throws IOException {
