@@ -27,7 +27,6 @@ public class PerformanceLogger {
 	}
 	
 	public void start() {
-		
 		if( startTime == null ) {
 			startTime = LocalDateTime.now();
 			startMemory = Runtime.getRuntime().freeMemory();
@@ -37,7 +36,6 @@ public class PerformanceLogger {
 	}
 	
 	public void printStatistics() {
-		
 		if( startTime != null ) {
 			log.info( "---------------------------------------" );
 
@@ -53,6 +51,19 @@ public class PerformanceLogger {
 		} else {
 			log.warn("Performance logger has not been started..");
 		}
+	}
+
+	/**
+	 * Duration between start time and the last call of the {@link #printStatistics} method.
+	 *
+	 * @return Last calculated duration
+	 */
+	public long getLastCalculatedDuration() {
+		return duration;
+	}
+
+	public long getCurrentDuration() {
+		return chronoUnit.between( startTime, LocalDateTime.now() );
 	}
 
 }
