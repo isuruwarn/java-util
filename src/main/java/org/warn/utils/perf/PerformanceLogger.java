@@ -1,6 +1,8 @@
 package org.warn.utils.perf;
 
 import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,16 +11,25 @@ public class PerformanceLogger {
 	
 	private static final Clock clock = Clock.systemUTC();
 	
-	long startTime;
-	long endTime;
-	long duration;
-	long startMemory;
-	long endMemory;
+	private LocalDateTime startTime;
+	private LocalDateTime endTime;
+	private long duration;
+	private long startMemory;
+	private long endMemory;
+	private ChronoUnit chronoUnit;
+
+	public PerformanceLogger() {
+		this( ChronoUnit.SECONDS );
+	}
+
+	public PerformanceLogger( ChronoUnit chronoUnit ) {
+		this.chronoUnit = chronoUnit;
+	}
 	
 	public void start() {
 		
-		if( startTime == 0 ) {
-			startTime = clock.millis();
+		if( startTime == null ) {
+			startTime = LocalDateTime.now();
 			startMemory = Runtime.getRuntime().freeMemory();
 		} else {
 			log.warn("Performance logger already started..");
@@ -27,12 +38,12 @@ public class PerformanceLogger {
 	
 	public void printStatistics() {
 		
-		if( startTime > 0 ) {
+		if( startTime != null ) {
 			log.info( "---------------------------------------" );
 
-			endTime = clock.millis();
-			duration = (endTime - startTime);
-			log.info( "Duration (ms): " + duration );
+			endTime = LocalDateTime.now();
+			duration = chronoUnit.between( startTime, endTime );
+			log.info( "Duration ({}): {}", chronoUnit.toString(), duration );
 			
 			endMemory = Runtime.getRuntime().freeMemory();
 			log.info( "Free Memory at Start (bytes): " + startMemory );
