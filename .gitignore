@@ -3,5 +3,6 @@
 /.classpath
 /.project
 /.idea
-/**.DS_Store
 /**.iml
+**.DS_Store
+
