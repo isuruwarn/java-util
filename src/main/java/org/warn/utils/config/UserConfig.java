@@ -44,13 +44,13 @@ public final class UserConfig {
 			throw new IllegalArgumentException(CONFIG_FILE_NAME_MISSING_ERR_MSG);
 		}
 		this.configFilePath = configFilePath;
-		LOGGER.info("Loading configurations from file - {}", StringHelper.arrayToString( this.configFilePath ) );
+		LOGGER.debug("Loading configurations from file - {}", StringHelper.arrayToString( this.configFilePath ) );
 		this.props = UserConfigJsonUtils.loadMapFromHomeDir( this.configFilePath );
 		if( this.props == null ) {
-			LOGGER.info("Could not find existing configurations file - " + Arrays.toString(this.configFilePath) );
+			LOGGER.debug("Could not find existing configurations file - " + Arrays.toString(this.configFilePath) );
 			this.props = new ConcurrentHashMap<String, String>();
 			if( defaultProps != null ) {
-				LOGGER.info("Loading default configurations");
+				LOGGER.debug("Loading default configurations");
 				this.props.putAll( defaultProps );
 			}
 		}
