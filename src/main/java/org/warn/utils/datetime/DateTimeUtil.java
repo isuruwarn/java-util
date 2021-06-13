@@ -26,7 +26,12 @@ public class DateTimeUtil {
 			seconds = TimeUnit.SECONDS.toSeconds( duration ) % 60;
 			minutes = TimeUnit.SECONDS.toMinutes( duration ) % 60;
 			hours = TimeUnit.SECONDS.toHours( duration );
-			
+
+		} else if( timeUnit == TimeUnit.MINUTES ) {
+			seconds = TimeUnit.MINUTES.toSeconds( duration ) % 60;
+			minutes = TimeUnit.MINUTES.toMinutes( duration ) % 60;
+			hours = TimeUnit.MINUTES.toHours( duration );
+
 		} else if( timeUnit == TimeUnit.HOURS ) {
 			seconds = TimeUnit.HOURS.toSeconds( duration ) % 60;
 			minutes = TimeUnit.HOURS.toMinutes( duration ) % 60;

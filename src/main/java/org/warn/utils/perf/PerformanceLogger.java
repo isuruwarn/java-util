@@ -3,8 +3,11 @@ package org.warn.utils.perf;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 
 import lombok.extern.slf4j.Slf4j;
+import org.warn.utils.datetime.DateTimeUtil;
+import org.warn.utils.file.FileHelper;
 
 @Slf4j
 public class PerformanceLogger {
@@ -41,11 +44,11 @@ public class PerformanceLogger {
 
 			endTime = LocalDateTime.now();
 			duration = chronoUnit.between( startTime, endTime );
-			log.info( "Duration ({}): {}", chronoUnit.toString(), duration );
+			log.info( "Duration: {}", DateTimeUtil.formatDuration( TimeUnit.of(chronoUnit), duration ) );
 			
 			endMemory = Runtime.getRuntime().freeMemory();
-			log.info( "Free Memory at Start (bytes): " + startMemory );
-			log.info( "Free Memory at End (bytes): " + endMemory );
+			log.info( "Free Memory at Start: {}", FileHelper.printFileSizeUserFriendly( startMemory ) );
+			log.info( "Free Memory at End: {}", FileHelper.printFileSizeUserFriendly( endMemory ) );
 			log.info( "---------------------------------------" );
 
 		} else {
