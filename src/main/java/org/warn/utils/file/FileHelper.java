@@ -8,13 +8,13 @@ public class FileHelper {
 	
 	public static String printFileSizeUserFriendly( long fileSize ) {
 		if( fileSize < KB ) {
-			return fileSize + "B";
+			return fileSize + " (bytes)";
 		} else if( fileSize >= KB && fileSize < MB ) {
-			return formatFileSize( fileSize, KB, "KB" );
+			return formatFileSize( fileSize, KB, " (KB)" );
 		} else if( fileSize >= MB && fileSize < GB ) {
-			return formatFileSize( fileSize, MB, "MB" );
+			return formatFileSize( fileSize, MB, " (MB)" );
 		} else {
-			return formatFileSize( fileSize, GB, "GB" );
+			return formatFileSize( fileSize, GB, " (GB)" );
 		}
 	}
 	

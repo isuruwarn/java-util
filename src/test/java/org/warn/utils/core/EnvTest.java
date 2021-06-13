@@ -1,9 +1,12 @@
 package org.warn.utils.core;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class EnvTest extends TestCase {
-	
+import static org.junit.Assert.assertNotNull;
+
+public class EnvTest {
+
+	@Test
 	public void testUserHomeDir() {
 		assertNotNull( Env.getUserHomeDir() );
 	}
