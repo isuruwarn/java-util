@@ -12,18 +12,16 @@ public class UICommons {
 	public static final String MAC_OS_NAME = "mac";
 	
 	public static void chooseDirectory( JTextField pathTxt ) {
-		JFileChooser fc = new JFileChooser();
-		fc.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
-		int returnVal = fc.showOpenDialog(null);
-		if( returnVal == JFileChooser.APPROVE_OPTION ) {
-			File file = fc.getSelectedFile();
-			pathTxt.setText( file.getPath() );
-		}
+		chooseFileOrDirectory( pathTxt, JFileChooser.DIRECTORIES_ONLY );
 	}
 	
 	public static void chooseFile( JTextField pathTxt ) {
+		chooseFileOrDirectory( pathTxt, JFileChooser.FILES_ONLY );
+	}
+
+	private static void chooseFileOrDirectory( JTextField pathTxt, int fileSelectionMode ) {
 		JFileChooser fc = new JFileChooser();
-		fc.setFileSelectionMode( JFileChooser.FILES_ONLY );
+		fc.setFileSelectionMode( fileSelectionMode );
 		int returnVal = fc.showOpenDialog(null);
 		if( returnVal == JFileChooser.APPROVE_OPTION ) {
 			File file = fc.getSelectedFile();
